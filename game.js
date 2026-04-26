@@ -6,6 +6,11 @@
   const startBtn = document.getElementById('startBtn');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const statusEl = document.getElementById('status');
+  const sprites = {
+    hero: Object.assign(new Image(), { src: 'hero-sprite-clean.png' }),
+    slime: Object.assign(new Image(), { src: 'slime-sprite-clean.png' }),
+    bat: Object.assign(new Image(), { src: 'bat-sprite-clean.png' })
+  };
   const W = canvas.width;
   const H = canvas.height;
   const TILE = 40;
@@ -206,25 +211,24 @@
   function drawHero() {
     if (hero.inv > 0 && Math.floor(hero.inv / 5) % 2) return;
     const x = hero.x, y = hero.y;
-    ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.ellipse(x + 12, y + 29, 13, 5, 0, 0, Math.PI*2); ctx.fill();
-    ctx.strokeStyle = '#09231d'; ctx.lineWidth = 3; ctx.strokeRect(x + 3, y + 9, 18, 20); ctx.fillStyle = '#2dd7b5'; ctx.fillRect(x + 4, y + 10, 16, 18);
-    ctx.fillStyle = '#ffe0ad'; ctx.fillRect(x + 6, y + 3, 13, 12);
-    ctx.fillStyle = '#d9844a'; ctx.beginPath(); ctx.moveTo(x + 5, y + 4); ctx.lineTo(x + 1, y - 5); ctx.lineTo(x + 11, y + 2); ctx.moveTo(x + 18, y + 4); ctx.lineTo(x + 24, y - 5); ctx.lineTo(x + 14, y + 2); ctx.fill();
-    ctx.fillStyle = '#10251d';
-    if (hero.dir !== 'up') { ctx.fillRect(x + 8, y + 8, 2, 2); ctx.fillRect(x + 15, y + 8, 2, 2); }
-    ctx.fillStyle = '#bdfbea'; ctx.fillRect(x + 1, y + 14 + Math.sin(hero.step)*2, 5, 11); ctx.fillRect(x + 19, y + 14 - Math.sin(hero.step)*2, 5, 11);
-    if (hero.attack > 0) { const ar = attackRect(); ctx.strokeStyle = '#eaffff'; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(ar.x + ar.w/2, ar.y + ar.h/2, 18, -.7, Math.PI+.7); ctx.stroke(); }
+    ctx.fillStyle = 'rgba(0,0,0,.32)'; ctx.beginPath(); ctx.ellipse(x + 12, y + 30, 18, 7, 0, 0, Math.PI*2); ctx.fill();
+    if (sprites.hero.complete && sprites.hero.naturalWidth) {
+      ctx.drawImage(sprites.hero, x - 18, y - 31 + Math.sin(hero.step) * 1.2, 62, 72);
+    } else {
+      ctx.strokeStyle = '#09231d'; ctx.lineWidth = 3; ctx.strokeRect(x + 3, y + 9, 18, 20); ctx.fillStyle = '#2dd7b5'; ctx.fillRect(x + 4, y + 10, 16, 18);
+    }
+    if (hero.attack > 0) { const ar = attackRect(); ctx.strokeStyle = '#eaffff'; ctx.lineWidth = 6; ctx.beginPath(); ctx.arc(ar.x + ar.w/2, ar.y + ar.h/2, 22, -.7, Math.PI+.7); ctx.stroke(); }
   }
   function drawEnemy(e) {
     if (!e.alive) return;
     const bob = Math.sin(e.phase * 5) * 3;
     ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.ellipse(e.x + e.w/2, e.y + e.h, e.w/2, 5, 0, 0, Math.PI*2); ctx.fill();
     if (e.type === 'bat') {
-      ctx.strokeStyle = '#241038'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(e.x + 13, e.y + 4 + bob); ctx.lineTo(e.x - 6, e.y + 2); ctx.lineTo(e.x + 5, e.y + 18); ctx.lineTo(e.x + 13, e.y + 12); ctx.lineTo(e.x + 21, e.y + 18); ctx.lineTo(e.x + 32, e.y + 2); ctx.closePath(); ctx.stroke(); ctx.fillStyle = '#a45cff'; ctx.beginPath(); ctx.moveTo(e.x + 13, e.y + 4 + bob); ctx.lineTo(e.x - 6, e.y + 2); ctx.lineTo(e.x + 5, e.y + 18); ctx.lineTo(e.x + 13, e.y + 12); ctx.lineTo(e.x + 21, e.y + 18); ctx.lineTo(e.x + 32, e.y + 2); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = '#f7efff'; ctx.fillRect(e.x + 10, e.y + 8 + bob, 7, 5);
+      if (sprites.bat.complete && sprites.bat.naturalWidth) ctx.drawImage(sprites.bat, e.x - 20, e.y - 24 + bob, 68, 54);
+      else { ctx.fillStyle = '#a45cff'; ctx.beginPath(); ctx.moveTo(e.x + 13, e.y + 4 + bob); ctx.lineTo(e.x - 6, e.y + 2); ctx.lineTo(e.x + 5, e.y + 18); ctx.lineTo(e.x + 13, e.y + 12); ctx.lineTo(e.x + 21, e.y + 18); ctx.lineTo(e.x + 32, e.y + 2); ctx.closePath(); ctx.fill(); }
     } else {
-      ctx.strokeStyle = '#0b2b18'; ctx.lineWidth = 4; ctx.beginPath(); ctx.ellipse(e.x + 13, e.y + 12 + bob, 15, 12, 0, 0, Math.PI*2); ctx.stroke(); ctx.fillStyle = '#9cff74'; ctx.beginPath(); ctx.ellipse(e.x + 13, e.y + 12 + bob, 14, 11, 0, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle = '#dbffd8'; ctx.fillRect(e.x + 8, e.y + 9 + bob, 4, 4); ctx.fillRect(e.x + 17, e.y + 9 + bob, 4, 4);
+      if (sprites.slime.complete && sprites.slime.naturalWidth) ctx.drawImage(sprites.slime, e.x - 18, e.y - 24 + bob, 62, 56);
+      else { ctx.strokeStyle = '#0b2b18'; ctx.lineWidth = 4; ctx.beginPath(); ctx.ellipse(e.x + 13, e.y + 12 + bob, 15, 12, 0, 0, Math.PI*2); ctx.stroke(); ctx.fillStyle = '#9cff74'; ctx.beginPath(); ctx.ellipse(e.x + 13, e.y + 12 + bob, 14, 11, 0, 0, Math.PI*2); ctx.fill(); }
     }
   }
   function drawKey() {
@@ -246,7 +250,7 @@
     ctx.fillStyle = 'rgba(2, 8, 10, .62)'; ctx.fillRect(0, 0, W, H);
     ctx.fillStyle = COLORS.white; ctx.textAlign = 'center'; ctx.font = '900 54px system-ui';
     ctx.fillText(hero.won ? 'Shrine Awakened!' : hero.dead ? 'Try Again?' : 'Moon Grove Quest', W/2, H/2 - 45);
-    ctx.fillStyle = COLORS.teal; ctx.font = 'bold 22px system-ui'; ctx.fillText('Press Enter to start • WASD/Arrows to move • Space/J to attack', W/2, H/2 + 6);
+    ctx.fillStyle = COLORS.teal; ctx.font = 'bold 22px system-ui'; ctx.fillText('Tap START or the game screen • Move with D-pad • Attack with ⚔', W/2, H/2 + 6);
     ctx.fillStyle = COLORS.gold; ctx.font = 'bold 18px system-ui'; ctx.fillText('Original mini adventure — collect key, open gate, reach shrine', W/2, H/2 + 42);
     ctx.textAlign = 'left';
   }
@@ -284,7 +288,7 @@
   });
 
   // Test hook, intentionally small and read-only for smoke tests.
-  window.__moonGrove = { hero, enemies, get started() { return started; }, reset, version: '1.1.0' };
+  window.__moonGrove = { hero, enemies, sprites, get started() { return started; }, reset, version: '1.2.0' };
   statusEl.textContent = message;
   render();
   requestAnimationFrame(loop);
