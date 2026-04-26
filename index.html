@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Moon Grove Quest</title>
+  <meta name="description" content="An original top-down fantasy adventure game for GitHub Pages.">
+  <meta property="og:title" content="Moon Grove Quest">
+  <meta property="og:description" content="Collect the moon key, open the old forest gate, and awaken the crystal shrine.">
+  <meta property="og:image" content="moon-grove-quest-screenshot.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero-card">
+      <div class="copy">
+        <p class="eyebrow">Original browser adventure</p>
+        <h1>Moon Grove Quest</h1>
+        <p>Collect the moon key, open the old forest gate, and awaken the crystal shrine.</p>
+      </div>
+      <div class="controls-help">
+        <span>Move: WASD / Arrow keys</span>
+        <span>Attack: Space / J</span>
+        <span>Start: Enter</span>
+      </div>
+    </section>
+
+    <section class="game-card" aria-label="Moon Grove Quest game">
+      <canvas id="game" width="960" height="640" tabindex="0" aria-label="Playable top-down adventure game"></canvas>
+      <div id="status" role="status" aria-live="polite">Loading...</div>
+      <div class="touch-controls" aria-label="Touch controls">
+        <button data-key="ArrowUp" class="up" aria-label="Move up">▲</button>
+        <button data-key="ArrowLeft" class="left" aria-label="Move left">◀</button>
+        <button data-key="ArrowDown" class="down" aria-label="Move down">▼</button>
+        <button data-key="ArrowRight" class="right" aria-label="Move right">▶</button>
+        <button data-key="Space" class="attack" aria-label="Attack">⚔</button>
+        <button id="startBtn" class="start" aria-label="Start or restart game">START</button>
+      </div>
+    </section>
+
+    <section class="notes">
+      <h2>About the build</h2>
+      <p>All gameplay is client-side JavaScript. Generated art guides the original forest, hero, monster, key, gate, and shrine direction while the canvas renderer keeps movement crisp and fast.</p>
+      <img src="spritesheet.png" loading="lazy" alt="Generated original pixel-art spritesheet used as art direction for the game.">
+    </section>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
